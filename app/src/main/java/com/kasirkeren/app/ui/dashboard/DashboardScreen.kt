@@ -106,7 +106,7 @@ fun DashboardScreen(viewModel: DashboardViewModel) {
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     MetricCard("Transaksi", summary.totalTransactions.toString(), Modifier.weight(1f))
-                    MetricCard("Rata-rata", summary.avgTransaction.toRupiah(), Modifier.weight(1f))
+                    MetricCard("Laba / Profit", summary.totalProfit.toRupiah(), Modifier.weight(1f))
                 }
             }
 

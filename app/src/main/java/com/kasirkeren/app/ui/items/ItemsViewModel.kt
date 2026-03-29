@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 data class ItemFormUi(
     val id: Int? = null,
     val name: String = "",
-    val category: String = "",
+    val sku: String = "",
     val sellPrice: String = "",
     val buyPrice: String = "",
     val stock: String = ""
@@ -70,7 +70,7 @@ class ItemsViewModel(
                 val result = repository.saveItem(
                     id = form.id,
                     name = form.name,
-                    category = form.category,
+                    sku = form.sku,
                     sellPrice = sell,
                     buyPrice = buy,
                     stock = stock

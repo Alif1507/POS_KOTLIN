@@ -35,20 +35,20 @@ data class ApiItemUpdateRequest(
 
 data class ApiTransaction(
     val id: Int,
-    @SerializedName("order_id") val orderId: String,
-    @SerializedName("total_amount") val totalAmount: Double,
-    val status: String,
+    @SerializedName("order_id") val orderId: String?,
+    @SerializedName("total_amount") val totalAmount: Double?,
+    val status: String?,
     @SerializedName("payment_type") val paymentType: String?,
-    @SerializedName("transaction_items") val items: List<ApiTransactionItem>,
-    @SerializedName("created_at") val createdAt: String
+    @SerializedName("transaction_items") val items: List<ApiTransactionItem>?,
+    @SerializedName("created_at") val createdAt: String?
 )
 
 data class ApiTransactionItem(
     val id: Int,
-    val name: String,
-    val price: Double,
-    @SerializedName("purchase_price") val purchasePrice: Double,
-    val quantity: Int
+    @SerializedName(value = "item_name", alternate = ["name"]) val itemName: String?,
+    @SerializedName(value = "unit_price", alternate = ["price"]) val unitPrice: Double?,
+    @SerializedName("purchase_price") val purchasePrice: Double?,
+    val quantity: Int?
 )
 
 data class ApiTransactionCreateRequest(

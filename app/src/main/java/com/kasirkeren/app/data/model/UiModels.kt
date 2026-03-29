@@ -21,7 +21,7 @@ data class CartLineUi(
 data class DashboardSummaryUi(
     val todayRevenue: Int,
     val totalTransactions: Int,
-    val avgTransaction: Int,
+    val totalProfit: Int,
     val topItem: String,
     val weeklyRevenue: List<RevenuePointUi>
 )

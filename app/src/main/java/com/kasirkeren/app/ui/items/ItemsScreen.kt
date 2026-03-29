@@ -190,7 +190,7 @@ private fun ItemFormModal(
     onSubmit: (ItemFormUi) -> Unit
 ) {
     var name by remember(visible, initialItem) { mutableStateOf(initialItem?.name.orEmpty()) }
-    var category by remember(visible, initialItem) { mutableStateOf(initialItem?.category.orEmpty()) }
+    var sku by remember(visible, initialItem) { mutableStateOf(initialItem?.category.orEmpty()) }
     var sellPrice by remember(visible, initialItem) { mutableStateOf(initialItem?.sellPrice?.toString().orEmpty()) }
     var buyPrice by remember(visible, initialItem) { mutableStateOf(initialItem?.buyPrice?.toString().orEmpty()) }
     var stock by remember(visible, initialItem) { mutableStateOf(initialItem?.stock?.toString().orEmpty()) }
@@ -206,7 +206,12 @@ private fun ItemFormModal(
         )
 
         OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Nama") }, modifier = Modifier.fillMaxWidth())
-        OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text("Kategori") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(
+            value = sku,
+            onValueChange = { sku = it },
+            label = { Text("SKU (Opsional)") },
+            modifier = Modifier.fillMaxWidth()
+        )
         OutlinedTextField(
             value = sellPrice,
             onValueChange = { sellPrice = it.filter(Char::isDigit) },
@@ -247,14 +252,14 @@ private fun ItemFormModal(
                         ItemFormUi(
                             id = initialItem?.id,
                             name = name.trim(),
-                            category = category.trim(),
+                            sku = sku.trim(),
                             sellPrice = sellPrice,
                             buyPrice = buyPrice,
                             stock = stock
                         )
                     )
                 },
-                enabled = name.isNotBlank() && category.isNotBlank() && validPrice,
+                enabled = name.isNotBlank() && validPrice,
                 modifier = Modifier.weight(1f)
             ) {
                 Text("Simpan")

@@ -33,11 +33,12 @@ class ItemRepository(private val api: ApiService) {
     suspend fun saveItem(
         id: Int?,
         name: String,
-        category: String,
+        sku: String,
         sellPrice: Int,
         buyPrice: Int,
         stock: Int
     ): AppResult<ItemUi> = safeApiCall {
+        val normalizedSku = sku.trim().ifBlank { null }
         if (id == null) {
             api.createItem(
                 ApiItemCreateRequest(
@@ -45,7 +46,7 @@ class ItemRepository(private val api: ApiService) {
                     price = sellPrice.toDouble(),
                     purchasePrice = buyPrice.toDouble(),
                     stock = stock,
-                    category = category
+                    category = normalizedSku
                 )
             ).toUi()
         } else {
@@ -56,7 +57,7 @@ class ItemRepository(private val api: ApiService) {
                     price = sellPrice.toDouble(),
                     purchasePrice = buyPrice.toDouble(),
                     stock = stock,
-                    category = category
+                    category = normalizedSku
                 )
             ).toUi()
         }
@@ -103,7 +104,7 @@ class DashboardRepository(private val api: ApiService) {
         DashboardSummaryUi(
             todayRevenue = today.totalRevenue.roundToInt(),
             totalTransactions = today.totalOrders,
-            avgTransaction = if (today.totalOrders == 0) 0 else (today.totalRevenue / today.totalOrders).roundToInt(),
+            totalProfit = today.totalProfit.roundToInt(),
             topItem = today.topItems.maxByOrNull { it.qty }?.name ?: "-",
             weeklyRevenue = chart.map { point ->
                 RevenuePointUi(
@@ -124,16 +125,16 @@ class TransactionRepository(private val api: ApiService) {
     }
 
     private fun ApiTransaction.toUi(): TransactionUi = TransactionUi(
-        orderId = orderId,
-        status = status,
+        orderId = orderId ?: "-",
+        status = status ?: "pending",
         paymentType = paymentType ?: "Tunai",
-        total = totalAmount.roundToInt(),
-        createdAt = createdAt,
-        items = items.map { item ->
+        total = (totalAmount ?: 0.0).roundToInt(),
+        createdAt = createdAt ?: "1970-01-01T00:00:00",
+        items = items.orEmpty().map { item ->
             TransactionItemUi(
-                name = item.name,
-                qty = item.quantity,
-                unitPrice = item.price.roundToInt()
+                name = item.itemName?.takeIf { it.isNotBlank() } ?: "(Tanpa Nama)",
+                qty = (item.quantity ?: 0).coerceAtLeast(0),
+                unitPrice = (item.unitPrice ?: 0.0).roundToInt()
             )
         }
     )

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsNone
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 fun KasirTopBar(
     title: String,
     subtitle: String?,
+    onRefreshClick: (() -> Unit)? = null,
     onNotificationClick: () -> Unit
 ) {
     TopAppBar(
@@ -39,6 +41,11 @@ fun KasirTopBar(
             containerColor = MaterialTheme.colorScheme.background
         ),
         actions = {
+            if (onRefreshClick != null) {
+                IconButton(onClick = onRefreshClick) {
+                    Icon(imageVector = Icons.Outlined.Refresh, contentDescription = "Refresh")
+                }
+            }
             IconButton(onClick = onNotificationClick) {
                 Icon(imageVector = Icons.Outlined.NotificationsNone, contentDescription = "Notifikasi")
             }

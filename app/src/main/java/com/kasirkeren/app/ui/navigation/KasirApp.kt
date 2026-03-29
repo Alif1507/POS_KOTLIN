@@ -40,6 +40,14 @@ fun KasirApp() {
     val currentEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentEntry?.destination?.route
     val current = AppRoute.fromRoute(currentRoute)
+    val onRefreshClick: (() -> Unit)? = when (current) {
+        AppRoute.Dashboard -> dashboardViewModel::refresh
+        AppRoute.Pos -> posViewModel::refreshItems
+        AppRoute.Items -> itemsViewModel::refreshItems
+        AppRoute.History -> historyViewModel::refresh
+        AppRoute.Cart -> posViewModel::refreshItems
+        AppRoute.Payment -> null
+    }
 
     LaunchedEffect(Unit) {
         posViewModel.navEvents.collect { event ->
@@ -63,6 +71,7 @@ fun KasirApp() {
             KasirTopBar(
                 title = current.title,
                 subtitle = current.subtitle,
+                onRefreshClick = onRefreshClick,
                 onNotificationClick = {}
             )
         },
